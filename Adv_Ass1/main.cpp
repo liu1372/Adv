@@ -8,30 +8,48 @@
 
 #include <iostream>
 #include <cmath>
-
-
+#include<vector>
 using namespace std;
 
-//translate the message from string to decimal number
-int translateStrinng (string mString)
+//convert the lower case to upper case
+void toUpper(vector<char>& inputString)
 {
-    int result = 0;
-    
-    int n = (int)mString.length();
-    char char_array[n+1];
-    strcpy(char_array, mString.c_str());
-    int mBase27_array[n+1];
+    size_t size = inputString.size();
+    for (int i = 0; i < size; i++)
+    {
+        if (inputString[i] >= 97 && inputString[i] <= 122)
+            inputString[i] -= 32;
+    }
+}
+
+//translate the message from string to decimal number
+unsigned long long int translateStrinng (vector<char>& mString)
+{
+    long long int result = 0;
+    vector<int> mBase27;
+
+    size_t n = mString.size();
     //store the message in a array as base of 27
     for (int i=0; i<n; i++){
-        if(char_array[i] != ' '){
-            mBase27_array[i] = (int)char_array[i] - 64;
+        if(mString[i] != ' '){
+            mBase27.push_back((int)mString[i] - 64);
+            
         }else{
-            mBase27_array[i] = 0;
+            mBase27.push_back(0);
         }
+
     }
-    int power = n-1;
+    
+    int power = (int)n-1;
+    cout << " n:  ";
+    cout<< power;
     for (int i=0; i<n; i++){
-        result = result + mBase27_array[i] * pow(27,power);
+        cout << " m[i]:  ";
+        cout<< mBase27[i];
+        result = result + mBase27[i] * pow(27,power);
+        cout << " result:  ";
+        cout<< result;
+        cout<<"\n";
         power--;
 
     }
@@ -40,48 +58,64 @@ int translateStrinng (string mString)
 }
 
 //translate the message from decimal number to string
-void translateInterger (int mInterger){
+void translateInterger (unsigned long long int mInterger, int size){
     //string result;
-    int length = 0;
-    int temp = mInterger;
-    //get the length of the message in string
-    while(temp>0){
-        temp = temp/27;
-        length++;
-    }
+    int length = size;
+   
     //cout << length;
-    int base27Array[length];
+    
+    
+    vector<int> mBase27;
     //store the base 27 message in the array
-    for (int i= length-1; i >= 0; i--){
-        base27Array[i] = mInterger % 27;
-        //cout << base27Array[i];
+    for (int i= 0; i <length; i++){
+        int a = mInterger % 27;
+        mBase27.push_back(a);
+        cout << "  ";
+        cout << a;
         mInterger = mInterger / 27;
     }
     
     //convert the base 27 messag eto string message and display the message
     cout << "the original message is: ";
-    for (int i =0;i< length;i++){
-        if( base27Array[i] == 0){
+    for (int i = length-1;i >=0 ;i--){
+        if( mBase27[i] == 0){
             cout << " ";
         }else{
-            cout << (char)(base27Array[i]+64);
+            cout << (char)(mBase27[i]+64);
         }
     }
+    
     
 }
     
 
 
 int main(int argc, const char * argv[]) {
-    
-    string userM;
-    // ask the user for the message
+    vector<char> userInput;
+    char inuptChar;
+    // ask the user for the message and store it in vector
     cout << "What's your message? ";
-    getline (cin, userM);
+    while (1)
+    {
+        inuptChar = getchar();
+        if (inuptChar == '\n')
+            break;
+        userInput.push_back(inuptChar);
+    }
+    //cout << userInput.size();
+    toUpper(userInput);
+    //cout << userInput.size();
+
+    
     //decM hold the decimal value of the message
-    int decM = translateStrinng(userM);
-    //cout<<decM;
-    translateInterger(decM);
+    unsigned long long int decM = translateStrinng(userInput);
+    cout<<decM;
+    
+    
+    
+    
+    //translate the integer message into string in upper case
+    translateInterger(decM,(int)userInput.size());
     return 0;
 
 
