@@ -44,12 +44,12 @@ unsigned long long int translateStrinng (vector<char>& mString)
     cout << " n:  ";
     cout<< power;
     for (int i=0; i<n; i++){
-        cout << " m[i]:  ";
-        cout<< mBase27[i];
+        //cout << " m[i]:  ";
+        //cout<< mBase27[i];
         result = result + mBase27[i] * pow(27,power);
-        cout << " result:  ";
-        cout<< result;
-        cout<<"\n";
+        //cout << " result:  ";
+        //cout<< result;
+        //cout<<"\n";
         power--;
 
     }
@@ -70,8 +70,8 @@ void translateInterger (unsigned long long int mInterger, int size){
     for (int i= 0; i <length; i++){
         int a = mInterger % 27;
         mBase27.push_back(a);
-        cout << "  ";
-        cout << a;
+        //cout << "  ";
+        //cout << a;
         mInterger = mInterger / 27;
     }
     
