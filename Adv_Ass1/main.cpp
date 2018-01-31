@@ -8,11 +8,59 @@
 
 #define us_longint unsigned long long int 
 #define longint long long int
+#define Ltime 20 //testing 20 times in Miller-Rabin probabilistic test
 
 #include <iostream>
 #include <cmath>
 #include <vector>
 using namespace std;
+
+longint modular_multi(longint x, longint y, longint mo)  
+{  
+    longint t;  
+    x%=mo;  
+    for(t=0;y;x=(x<<1)%mo,y>>=1)  
+        if (y&1)  
+            t=(t+x)%mo;  
+    return t;  
+}  
+   
+longint modular_exp(longint num, longint t, longint mo)  
+{  
+    longint ret=1,temp=num%mo;  
+    for(;t;t>>=1,temp=modular_multi(temp,temp,mo))  
+        if (t&1)  
+            ret=modular_multi(ret,temp,mo);  
+    return ret;  
+}  
+
+// Miller-Rabin probabilistic test for testing prime
+bool miller_rabbin(longint n, unsigned int Ltime)
+{  
+    if (n==2)return true;  
+    if (n<2||!(n&1))return false;  
+    int t=0;  
+    longint a,x,y,u=n-1;  
+    while((u&1)==0) t++,u>>=1;  
+    for(int i=0;i<Ltime;i++)  
+    {  
+        a=rand()%(n-1)+1;  
+        x=modular_exp(a,u,n);  
+        for(int j=0;j<t;j++)  
+        {  
+            y=modular_multi(x,x,n);  
+            if (y==1&&x!=1&&x!=n-1)  
+                return false;  
+            ///we use theorem here, if there is a non-trivial square root of 1 for mod n, then n is a composite number
+            ///If a number x satisfies the equation x ^ 2≡1 (mod n), but x is not equal to two 'trivial' square roots of 1 for mod n: 1 or -1, 
+               ///then x is Non-trivial square root of 1 for mod n 
+            x=y;  
+        }  
+        if (x!=1)///According to Fermat's small theorem, if n is a prime number, there is a ^ (n-1) ≡ 1 (mod n), so n can not be prime
+            return false;  
+    }  
+    return true;  
+} 
 
 //convert the lower case to upper case
 void toUpper(vector<char>& inputString)
