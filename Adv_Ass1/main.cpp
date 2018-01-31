@@ -91,7 +91,7 @@ void translateInt(us_longint mInt, int size) {
     
 }
     
-// Extended gcd
+// Extended euclid gcd
 void extGCD(us_longint a, us_longint b, us_longint &g, longint &s, longint &t) {
     // base case
     if (b == 0) {
@@ -107,6 +107,23 @@ void extGCD(us_longint a, us_longint b, us_longint &g, longint &s, longint &t) {
     longint tmpS = s;
     s = t;
     t = tmpS - t*q;
+}
+
+us_longint makePrimeNumber() {
+  // TODO add code to return some large prime number
+  // also make sure these primes arn't so large n overflows unsigned long long int
+  return 0;
+}
+
+us_longint pow(us_longint b, us_longint p) {
+  // TODO add code to return the power
+}
+
+void init_PQ(us_longint &p, us_longint &q) {
+  p = makePrimeNumber();
+  do {
+    q = makePrimeNumber();
+  } while (p != q);
 }
 
 int main(int argc, const char * argv[]) {
@@ -128,15 +145,15 @@ int main(int argc, const char * argv[]) {
     //cout << userInput.size();
 
     //decM hold the decimal value of the message
-    us_longint decM = translateStrinng(userInput);
+    us_longint decM = translateString(userInput);
     cout << decM;
     
-    //translate the integer message into string in upper case
+    //translate the int message into string in upper case
     translateInt(decM, (int)userInput.size());
     */
     
     // test egcd
-    
+    /*
     us_longint a = 8;
     us_longint b = 6;
     us_longint g = 0;
@@ -145,6 +162,56 @@ int main(int argc, const char * argv[]) {
     
     extGCD(a, b, g, s, t);
     cout << a << " " << b << " " << g << " " << s << " " << t << "\n";
+    */
+    
+    // actual code
+    
+    // get message to encrypt
+    vector<char> userInput;
+    char inChar;
+    
+    // ask the user for the message and store it in vector
+    cout << "What's your message? ";
+    while (1) {
+        //inChar = getchar();  <---------- this keeps erroring out on my side
+        //                                 ‘getchar’ was not declared in this scope
+        if (inChar == '\n')
+            break;
+        userInput.push_back(inChar);
+    }
+    toUpper(userInput);
+
+    //decM hold the decimal value of the message
+    us_longint decM = translateString(userInput);
+    
+    // init p and q as large primes
+    us_longint p, q;
+    init_PQ(p, q);
+    
+    // init n and phi_n
+    us_longint n = p*q;
+    us_longint phi_n = (p - 1)*(q - 1);
+    
+    // get user input e as public key
+    us_longint e = 0, g = 0;
+    longint s = 0, t = 0;
+    do {
+        // TODO get user to input some int until it works
+        //e = 
+        extGCD(e, phi_n, g, s, t);
+    } while (g != 1);
+    
+    // private key
+    us_longint d = s;
+    
+    // encrypt
+    us_longint cypher = pow(decM, e) % n;
+    
+    // decrypt
+    us_longint decrypt_c = pow(cypher, d) % n;
+    
+    //translate the int message into string in upper case
+    translateInt(decrypt_c, (int)userInput.size());
     
     return 0;
 }
