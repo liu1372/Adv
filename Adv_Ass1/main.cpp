@@ -189,11 +189,11 @@ us_longint lrPow(us_longint x, us_longint p) {
   return out;
 }
 
-void init_PQ(us_longint &p, us_longint &q) {
-  p = makePrimeNumber();
+void init_PQ(us_longint &p, us_longint &q, us_longint decM) {
+  p = makePrimeNumber(decM);
     
   do {
-    q = makePrimeNumber();
+    q = makePrimeNumber(decM);
   } while (p != q);
 }
 
@@ -220,7 +220,7 @@ int main(int argc, const char * argv[]) {
     
     // init p and q as large primes
     us_longint p, q;
-    init_PQ(p, q);
+    init_PQ(p, q, decM);
     
     // init n and phi_n
     us_longint n = p*q;
