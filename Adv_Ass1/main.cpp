@@ -35,7 +35,7 @@ longint modular_exp(longint num, longint t, longint mo)
 }  
 
 // Miller-Rabin probabilistic test for testing prime
-bool miller_rabbin(longint n, unsigned int Ltime)//test if n is prime for "Ltime" times
+bool miller_rabbin(longint n, unsigned int Ltime)//test if n is prime for "Ltime" times; just use Ltime = N = 20 here
 {  
     if (n==2)return true;  
     if (n<2||!(n&1))return false;  
