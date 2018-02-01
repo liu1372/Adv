@@ -8,7 +8,7 @@
 
 #define us_longint unsigned long long int 
 #define longint long long int
-#define Ltime 20 //testing 20 times in Miller-Rabin probabilistic test
+#define N 20 //testing 20 times in Miller-Rabin probabilistic test
 
 #include <iostream>
 #include <cmath>
@@ -35,7 +35,7 @@ longint modular_exp(longint num, longint t, longint mo)
 }  
 
 // Miller-Rabin probabilistic test for testing prime
-bool miller_rabbin(longint n, unsigned int Ltime)
+bool miller_rabbin(longint n, unsigned int Ltime)//test if n is prime for "Ltime" times
 {  
     if (n==2)return true;  
     if (n<2||!(n&1))return false;  
