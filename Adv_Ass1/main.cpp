@@ -13,6 +13,9 @@
 #include <iostream>
 #include <cmath>
 #include <vector>
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
 #include <time.h>
 using namespace std;
 
@@ -36,7 +39,7 @@ longint modular_exp(longint num, longint t, longint mo)
 }  
 
 // Miller-Rabin probabilistic test for testing prime
-bool miller_rabbin(longint n, unsigned int Ltime)//test if n is prime for "Ltime" times
+bool miller_rabbin(longint n, unsigned int Ltime)//test if n is prime for "Ltime" times; just use Ltime = N = 20 here
 {  
     if (n==2)return true;  
     if (n<2||!(n&1))return false;  
@@ -159,22 +162,32 @@ void extGCD(us_longint a, us_longint b, us_longint &g, longint &s, longint &t) {
     t = tmpS - t*q;
 }
 
-us_longint makePrimeNumber() {
-  // TODO add code to return some large prime number
-    
-    
-    
-    
-  // also make sure these primes arn't so large n overflows unsigned long long int
-  return 0;
+us_longint makePrimeNumber(us_longint decM) { //input decM then return a prime number
+    us_longint x;
+    srand((unsigned)time(NULL));
+    us_longint range = pow(decM,0.5);
+    while(1){
+    x = (rand()% (range-1))+1 ;
+    if(miller_rabbin(x,N))break;
+    }
+    // also make sure these primes arn't so large n overflows unsigned long long int
+    return x;
 }
 
-us_longint pow(us_longint b, us_longint p) {
-  // TODO add code to return the power
-    return 0;
+us_longint lrPow(us_longint x, us_longint p) {
+  us_longint out = 1;
+  while (p > 0) {
+    if (p % 2 == 0) {
+      x = x * x;
+      p = p/2;
+    }
+    else {
+      out = out * x;
+      p = p - 1;
+    }
+  }
+  return out;
 }
-
-
 
 void init_PQ(us_longint &p, us_longint &q) {
   p = makePrimeNumber();
@@ -226,13 +239,14 @@ int main(int argc, const char * argv[]) {
     us_longint d = s;
     
     // encrypt
-    us_longint cypher = pow(decM, e) % n;
+    us_longint cypher = lrPow(decM, e) % n;
     
     // decrypt
-    us_longint decrypt_c = pow(cypher, d) % n;
+    us_longint decrypt_c = lrPow(cypher, d) % n;
     
     //translate the int message into string in upper case
     translateInt(decrypt_c, (int)userInput.size());
+    
     
     return 0;
 }
