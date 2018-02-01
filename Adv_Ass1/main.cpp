@@ -13,6 +13,7 @@
 #include <iostream>
 #include <cmath>
 #include <vector>
+#include <time.h>
 using namespace std;
 
 longint modular_multi(longint x, longint y, longint mo)  
@@ -41,6 +42,7 @@ bool miller_rabbin(longint n, unsigned int Ltime)//test if n is prime for "Ltime
     if (n<2||!(n&1))return false;  
     int t=0;  
     longint a,x,y,u=n-1;  
+    srand( (unsigned)time( NULL ) );
     while((u&1)==0) t++,u>>=1;  
     for(int i=0;i<Ltime;i++)  
     {  
