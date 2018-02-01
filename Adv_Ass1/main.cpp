@@ -13,6 +13,9 @@
 #include <iostream>
 #include <cmath>
 #include <vector>
+#include <stdio.h>
+#include <stdlib.h>
+
 using namespace std;
 
 longint modular_multi(longint x, longint y, longint mo)  
@@ -163,8 +166,19 @@ us_longint makePrimeNumber() {
   return 0;
 }
 
-us_longint pow(us_longint b, us_longint p) {
-  // TODO add code to return the power
+us_longint lrPow(us_longint x, us_longint p) {
+  us_longint out = 1;
+  while (p > 0) {
+    if (p % 2 == 0) {
+      x = x * x;
+      p = p/2;
+    }
+    else {
+      out = out * x;
+      p = p - 1;
+    }
+  }
+  return out;
 }
 
 void init_PQ(us_longint &p, us_longint &q) {
@@ -221,8 +235,7 @@ int main(int argc, const char * argv[]) {
     // ask the user for the message and store it in vector
     cout << "What's your message? ";
     while (1) {
-        //inChar = getchar();  <---------- this keeps erroring out on my side
-        //                                 ‘getchar’ was not declared in this scope
+        inChar = getchar();
         if (inChar == '\n')
             break;
         userInput.push_back(inChar);
@@ -253,13 +266,14 @@ int main(int argc, const char * argv[]) {
     us_longint d = s;
     
     // encrypt
-    us_longint cypher = pow(decM, e) % n;
+    us_longint cypher = lrPow(decM, e) % n;
     
     // decrypt
-    us_longint decrypt_c = pow(cypher, d) % n;
+    us_longint decrypt_c = lrPow(cypher, d) % n;
     
     //translate the int message into string in upper case
     translateInt(decrypt_c, (int)userInput.size());
+    
     
     return 0;
 }
