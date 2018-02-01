@@ -170,7 +170,6 @@ us_longint makePrimeNumber() {
   return 0;
 }
 
-<<<<<<< HEAD
 us_longint lrPow(us_longint x, us_longint p) {
   us_longint out = 1;
   while (p > 0) {
@@ -184,14 +183,7 @@ us_longint lrPow(us_longint x, us_longint p) {
     }
   }
   return out;
-=======
-us_longint pow(us_longint b, us_longint p) {
-  // TODO add code to return the power
-    return 0;
->>>>>>> c168f79f6c76e720b176abffa6d297838320241d
 }
-
-
 
 void init_PQ(us_longint &p, us_longint &q) {
   p = makePrimeNumber();
