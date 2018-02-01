@@ -162,10 +162,15 @@ void extGCD(us_longint a, us_longint b, us_longint &g, longint &s, longint &t) {
 
 us_longint makePrimeNumber() {
   // TODO add code to return some large prime number
+    
+    
+    
+    
   // also make sure these primes arn't so large n overflows unsigned long long int
   return 0;
 }
 
+<<<<<<< HEAD
 us_longint lrPow(us_longint x, us_longint p) {
   us_longint out = 1;
   while (p > 0) {
@@ -179,58 +184,30 @@ us_longint lrPow(us_longint x, us_longint p) {
     }
   }
   return out;
+=======
+us_longint pow(us_longint b, us_longint p) {
+  // TODO add code to return the power
+    return 0;
+>>>>>>> c168f79f6c76e720b176abffa6d297838320241d
 }
+
+
 
 void init_PQ(us_longint &p, us_longint &q) {
   p = makePrimeNumber();
+    
   do {
     q = makePrimeNumber();
   } while (p != q);
 }
 
 int main(int argc, const char * argv[]) {
-    // test char translation
-    /*
-    vector<char> userInput;
-    char inChar;
-    // ask the user for the message and store it in vector
-    cout << "What's your message? ";
-    while (1)
-    {
-        inChar = getchar();
-        if (inChar == '\n')
-            break;
-        userInput.push_back(inChar);
-    }
-    //cout << userInput.size();
-    toUpper(userInput);
-    //cout << userInput.size();
-
-    //decM hold the decimal value of the message
-    us_longint decM = translateString(userInput);
-    cout << decM;
     
-    //translate the int message into string in upper case
-    translateInt(decM, (int)userInput.size());
-    */
-    
-    // test egcd
-    /*
-    us_longint a = 8;
-    us_longint b = 6;
-    us_longint g = 0;
-    longint s = 0;
-    longint t = 0;
-    
-    extGCD(a, b, g, s, t);
-    cout << a << " " << b << " " << g << " " << s << " " << t << "\n";
-    */
-    
-    // actual code
     
     // get message to encrypt
     vector<char> userInput;
     char inChar;
+    int key;
     
     // ask the user for the message and store it in vector
     cout << "What's your message? ";
@@ -257,8 +234,8 @@ int main(int argc, const char * argv[]) {
     us_longint e = 0, g = 0;
     longint s = 0, t = 0;
     do {
-        // TODO get user to input some int until it works
-        //e = 
+        cout << "Please enter an integer value for the key: ";
+        cin >> key;
         extGCD(e, phi_n, g, s, t);
     } while (g != 1);
     
