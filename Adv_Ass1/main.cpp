@@ -15,6 +15,8 @@
 #include <vector>
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
+#include <time.h>
 
 using namespace std;
 
@@ -160,14 +162,16 @@ void extGCD(us_longint a, us_longint b, us_longint &g, longint &s, longint &t) {
     t = tmpS - t*q;
 }
 
-us_longint makePrimeNumber() {
-  // TODO add code to return some large prime number
-    
-    
-    
-    
-  // also make sure these primes arn't so large n overflows unsigned long long int
-  return 0;
+us_longint makePrimeNumber(us_longint decM) { //input decM then return a prime number
+    us_longint x;
+    srand((unsigned)time(NULL));
+    us_longint range = pow(decM,0.5);
+    while(1){
+    x = (rand()% (range-1))+1 ;
+    if(miller_rabbin(x,N))break;
+    }
+    // also make sure these primes arn't so large n overflows unsigned long long int
+    return x;
 }
 
 us_longint lrPow(us_longint x, us_longint p) {
