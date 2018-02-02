@@ -97,8 +97,6 @@ us_longint translateString(vector<char>& mString)
     }
     
     int power = (int)n - 1;
-    cout << " n:  ";
-    cout << power;
     for (int i = 0; i < n; i++){
         //cout << " m[i]:  ";
         //cout<< mBase27[i];
@@ -140,6 +138,7 @@ void translateInt(us_longint mInt, int size) {
             cout << (char)(mBase27[i] + 64);
         }
     }
+    cout<<"\n";
     
     
 }
@@ -165,7 +164,7 @@ void extGCD(us_longint a, us_longint b, us_longint &g, longint &s, longint &t) {
 us_longint makePrimeNumber(us_longint decM) { //input decM then return a prime number
     us_longint x;
     srand((unsigned)time(NULL));
-    us_longint range = pow(decM,0.5);
+    us_longint range = pow(18000000,0.5);
     while(1){
     x = (rand()% (range-1))+1 ;
     if(miller_rabbin(x,N))break;
@@ -174,19 +173,31 @@ us_longint makePrimeNumber(us_longint decM) { //input decM then return a prime n
     return x;
 }
 
-us_longint lrPow(us_longint x, us_longint p) {
-  us_longint out = 1;
+// the left right power
+us_longint lrPow(us_longint x, us_longint p, us_longint n) {
+  /*
+    us_longint out = 1;
   while (p > 0) {
     if (p % 2 == 0) {
-      x = x * x;
+      x = x * x % n;
       p = p/2;
     }
     else {
-      out = out * x;
+      out = out * x % n;
       p = p - 1;
     }
   }
-  return out;
+   */
+    us_longint out = 1;
+    us_longint prev = x % n;
+    while (p > 0) {
+        if (p % 2 == 1) {
+            out = out * prev % n;
+        }
+        prev = prev * prev % n;
+        p = p / 2;
+    }
+    return out % n;
 }
 
 void init_PQ(us_longint &p, us_longint &q, us_longint decM) {
@@ -194,7 +205,7 @@ void init_PQ(us_longint &p, us_longint &q, us_longint decM) {
     
   do {
     q = makePrimeNumber(decM);
-  } while (p != q);
+  } while (p == q);
 }
 
 int main(int argc, const char * argv[]) {
@@ -203,8 +214,6 @@ int main(int argc, const char * argv[]) {
     // get message to encrypt
     vector<char> userInput;
     char inChar;
-    int key;
-    
     // ask the user for the message and store it in vector
     cout << "What's your message? ";
     while (1) {
@@ -231,22 +240,26 @@ int main(int argc, const char * argv[]) {
     longint s = 0, t = 0;
     do {
         cout << "Please enter an integer value for the key: ";
-        cin >> key;
+        cin >> e;
         extGCD(e, phi_n, g, s, t);
-    } while (g != 1);
+        //cout <<"e: "<< e << "\nphi n : " << phi_n << "\ng: " << g << "\ns: " << s << "\nt: " << t << "\np: " << p << "\nq: " << q << "\n";
+    } while (g != 1 || s < 0);
     
     // private key
     us_longint d = s;
     
     // encrypt
-    us_longint cypher = lrPow(decM, e) % n;
+    us_longint cypher = lrPow(decM, e, n);
     
     // decrypt
-    us_longint decrypt_c = lrPow(cypher, d) % n;
+    us_longint decrypt_c = lrPow(cypher, d, n);
     
     //translate the int message into string in upper case
     translateInt(decrypt_c, (int)userInput.size());
-    
-    
+    cout <<"p: "<< p << "\nq : " << q << "\nn: " << p*q << "\nM: " << decM << "\nC: " << cypher << "\nP: " << decrypt_c<<"\n";
+
+    /*
+    cout << lrPow(5, 117, 19);
+    */
     return 0;
 }
